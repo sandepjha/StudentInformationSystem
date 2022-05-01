@@ -1,0 +1,70 @@
+{% extends 'base.html' %} {% block content %}
+<div class="row">
+  <div class="col-sm-4">
+    <h4 class="text-center alert alert-info">Add New Student</h4>
+    <form action="" method="POST">
+      {% for fm in form %} {% csrf_token %}
+      <div class="form-group">
+        {{fm.label_tag}}{{fm}}{{fm.errors|striptags}}<br />
+      </div>
+      {% endfor %}
+      <input type="submit" name="submit" class="btn btn-success" />
+    </form>
+  </div>
+  <div class="col">
+    <div class="col-sm-12">
+      <h3 class="text-center alert alert-info">Retrieve Student</h3>
+      {% if stud %}
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Password</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        {% for stu in stud %}
+        <tr>
+          <td>{{stu.id}}</td>
+          <td>{{stu.name}}</td>
+          <td>{{stu.email}}</td>
+          <td>{{stu.password}}</td>
+          <td>
+            {% comment %}
+            <form
+              action="{% url 'update' stu.id %}"
+              method="POST"
+              class="d-inline"
+            >
+              {% csrf_token %}
+              <input type="submit" value="edit" class="btn btn-danger btn-sm" />
+            </form>
+            {% endcomment %}
+            <a href="{% url 'update' stu.id %}" class="btn btn-warning btn-sm"
+              >edit</a
+            >
+            <form
+              action="{% url 'delete' stu.id %}"
+              method="POST"
+              class="d-inline"
+            >
+              {% csrf_token %}
+              <input
+                type="submit"
+                value="delete"
+                class="btn btn-danger btn-sm"
+              />
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% else %}
+      <h3 class="text-center alery alert-danger">No Records</h3>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock content %}
